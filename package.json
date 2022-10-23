@@ -1,8 +1,12 @@
 {
+  "dependencies": {
+    "pg": "^8.8.0"
+  },
   "name": "locadora-veiculo",
-  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
   "scripts": {
     "start": "node app.js"
   },
@@ -16,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/Gui-Menezes/locadora-veiculo/issues"
   },
-  "homepage": "https://github.com/Gui-Menezes/locadora-veiculo#readme",
-  "dependencies": {
-    "pg": "^8.8.0"
-  }
+  "homepage": "https://github.com/Gui-Menezes/locadora-veiculo#readme"
 }
