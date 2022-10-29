@@ -22,13 +22,13 @@ async function inserir(pesssoa){
     return res.rows[0]
 }
 
-async function atualizar(id, pesssoa) {
+async function atualizar(cod_cli, pesssoa) {
     const cliente = new Client(conexao)
 
     await cliente.connect()
 
-    const res = await cliente.query('UPDATE cliente SET nome = $1, documento = $2 WHERE id = $3 RETURNING *', 
-    [pesssoa.nome, pesssoa.documento, id]);
+    const res = await cliente.query('UPDATE cliente SET nome = $1, documento = $2 WHERE cod_cli = $3 RETURNING *', 
+    [pesssoa.nome, pesssoa.documento, cod_cli]);
     await cliente.end()
     return res.rows[0]
 }
@@ -44,25 +44,26 @@ async function deletar(cod_cli) {
     return res.rows[0]
 }
 
-async function buscarPorId(id) {
+async function buscarPorCodCli(cod_cli) {
     const cliente = new Client(conexao)
 
     await cliente.connect()
 
-    const res = await cliente.query('SELECT * FROM cliente WHERE id = $1 RETURNING *',
-    [id]);
-    await cliente.end()
-    return res.rows[0]
+    const res = await cliente.query('SELECT * FROM cliente WHERE cod_cli = $1',
+    [cod_cli]);
+    await cliente.end();
+    return res.rows[0];
 }
 
 async function buscarPorNome(nome) {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query('SELECT * FROM produtos WHERE nome LIKE %$1% RETURNING *',[nome]);
+    const res = await cliente.query("SELECT * FROM cliente WHERE nome LIKE '%$1%'",
+    [nome]);
     await cliente.end();
-    return res.rows;
+    return res.rows[0];
 }
 
 module.exports = {
-    listar, inserir, atualizar, deletar, buscarPorId, buscarPorNome
+    listar, inserir, atualizar, deletar, buscarPorCodCli, buscarPorNome
 }
