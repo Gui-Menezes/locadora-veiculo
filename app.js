@@ -54,12 +54,12 @@ async function deletar(cod_auto) {
 
 }
 
-async function buscarPorCod_auto(veiculo) {
+async function buscarPorCod_auto(cod_auto) {
     const cliente = new Client(conexao)
 
     await cliente.connect();
 
-    const res = await cliente.query('SELECT * FROM veiculo WHERE cod_auto = $1', [veiculo.cod_auto]);
+    const res = await cliente.query('SELECT * FROM veiculo WHERE cod_auto = $1', [cod_auto]);
     await cliente.end();
     return res.rows[0];
     
