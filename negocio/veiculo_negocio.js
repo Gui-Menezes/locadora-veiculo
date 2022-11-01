@@ -12,8 +12,8 @@ async function inserir(veiculo) {
 }
 
 async function listar() {
-    if(listar){
-        const veiculolistado = await veiculoPersistence.listar();
+    const veiculolistado = await veiculoPersistence.listar();
+    if(veiculolistado != null){        
         return veiculolistado;
     }
     else {
