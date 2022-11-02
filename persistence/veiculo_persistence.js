@@ -48,7 +48,7 @@ async function buscarPorCod_auto(cod_auto) {
 async function buscarPorModelo(modelo) {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query('SELECT * FROM veiculo WHERE modelo=$1',[modelo]);
+    const res = await cliente.query('SELECT * FROM veiculo WHERE modelo like $1',[ '%' + modelo + '%']);
     await cliente.end();
     return res.rows;
 }

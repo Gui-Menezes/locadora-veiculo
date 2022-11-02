@@ -3,7 +3,7 @@ const conexao = {
     port: 5432,
     database: 'locadora',
     user: 'postgres',
-    password:'postgres' //mudar para postgres quando no senac
+    password:'juan1401' //mudar para postgres quando no senac
 }
 
 module.exports = {conexao}
