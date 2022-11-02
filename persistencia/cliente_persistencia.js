@@ -58,8 +58,7 @@ async function buscarPorCodCli(cod_cli) {
 async function buscarPorNome(nome) {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query("SELECT * FROM cliente WHERE nome LIKE '%$1%'",
-    [nome]);
+    const res = await cliente.query('SELECT * FROM produtos WHERE NOME LIKE $1',['%' + nome + '%']);
     await cliente.end();
     return res.rows[0];
 }

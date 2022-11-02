@@ -1,4 +1,6 @@
 const clientePersistencia = require('../persistencia/cliente_persistencia')
+const { validarCliente } = require('./cliente_validacao')
+
 // FUNCIOANDO!!!
 async function inserir(pesssoa) {
     if(pesssoa && pesssoa.nome && pesssoa.documento) {
@@ -9,61 +11,28 @@ async function inserir(pesssoa) {
         throw { id: 400, mensagem: "Faltam parâmetros!"};
     }
 }
-// FUNCIOANDO!!!
+// FUNCIOANDO!
 async function listar() {
-    const clienteInserido = await clientePersistencia.listar();
-    if (clienteInserido != null) {
-        return clienteInserido;
+    const clientesListados = await clientePersistencia.listar();
+    if (clientesListados) {
+        return clientesListados;
     }    
     else {
         throw { id: 500, mensagem: "Lista de clientes vazia!" };
     }
 }
-// FUNCIOANDO!!! (Mas tem que verificar erro quando não existe cod_cli no BD)
-async function deletar(cod_cli){
-    if(cod_cli){
-        const clienteDeletado = await clientePersistencia.deletar(cod_cli);
-        return clienteDeletado;
-    }
-    else{
-        throw { id: 400, mensagem: "Faltam parâmetros!" };
-    }
-}
 
-// async function buscarPorCodCli(cod_cli) {
-//     if(cod_cli) {
-//         if(clientePersistencia.listar().cod_cli){
-//             const clienteBuscado = await clientePersistencia.buscarPorCodCli(cod_cli);
-//             return clienteBuscado
-//         }else{
-//             throw { id: 600, mensagem: "Nenhum cliente localizado!" }
-//         }     
-//     }else{
-//         throw { id: 400, mensagem: "Faltam parâmetros!" }        
-//     }
-// }
-
-// FUNCIOANDO!!! (Mas tem que verificar erro quando não existe cod_cli no BD)
+// FUNCIOANDO!
 async function buscarPorCodCli(cod_cli) {
-    if(cod_cli) {
-        const clienteBuscado = await clientePersistencia.buscarPorCodCli(cod_cli);
-        return clienteBuscado
+    const cliente = await clientePersistencia.buscarPorCodCli(cod_cli);
+    if(!cliente) {
+        throw { id: 404, mensagem: "Cliente não encontrado!" };
     }else{
-        throw { id: 400, mensagem: "Faltam parâmetros!" }        
+        return cliente;     
     }
 }
 
-// FUNCIOANDO!!! (Mas tem que verificar erro quando não existe cod_cli no BD)
-async function atualizar(cod_cli, pesssoa){
-    if(cod_cli && pesssoa && pesssoa.nome && pesssoa.documento){
-        const clienteAtualizado = await clientePersistencia.atualizar(cod_cli, pesssoa)
-        return clienteAtualizado
-    }
-    else {
-        throw {id: 400, mensagem: "Faltam parâmetros!" };
-    }
-}
-
+// FUNCIOANDO!
 async function buscarPorNome(nome){
     if(nome){
         const clienteBuscadoPorNome = await clientePersistencia.buscarPorNome(nome)
@@ -71,6 +40,27 @@ async function buscarPorNome(nome){
     }
     else{
         throw { id: 400, mensagem: "Faltam parâmetros!" }
+    }
+}
+
+// FUNCIOANDO!
+async function atualizar(cod_cli, pessoa){
+    if(validarCliente(pessoa)) {
+        const clienteAtualizar = await buscarPorCodCli(cod_cli)
+        if(clienteAtualizar) {
+            return await clientePersistencia.atualizar(cod_cli, pessoa);
+        }
+    }
+    else {
+        throw {id: 400, mensagem: "Parâmetro(s) inválido(s)!" };
+    }
+}
+
+// FUNCIOANDO!
+async function deletar(cod_cli){
+    const clienteDeletar = await buscarPorCodCli(cod_cli)
+    if(clienteDeletar){
+        return await clientePersistencia.deletar(cod_cli);
     }
 }
 
