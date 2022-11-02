@@ -24,11 +24,11 @@ async function listar() {
 
 // FUNCIOANDO!
 async function buscarPorCodCli(cod_cli) {
-    const cliente = await clientePersistencia.buscarPorCodCli(cod_cli);
-    if(!cliente) {
+    const clienteBuscadoPorCodCli = await clientePersistencia.buscarPorCodCli(cod_cli);
+    if(!clienteBuscadoPorCodCli) {
         throw { id: 404, mensagem: "Cliente não encontrado!" };
     }else{
-        return cliente;     
+        return clienteBuscadoPorCodCli;     
     }
 }
 
