@@ -1,4 +1,3 @@
-const veiculoPersistence = require('./persistence/veiculo_persistence')
 const veiculoNegocio = require('./negocio/veiculo_negocio')
 
 
@@ -54,23 +53,6 @@ async function main() {
     //     console.log(err);
     // }
 
-// const listaVeiculos = await veiculoPersistence.listar();
-//     console.log("Lista de Veiculos",listaVeiculos);
-
-// const veiculoInserido = await veiculoPersistence.inserir({modelo: "Ranger", marca: "Ford", status: "Livre"})
-//     console.log("Veiculo Inserido", veiculoInserido);
-    
-//     const veiculo2 = await veiculoPersistence.buscarPorCod_auto(2);
-//     console.log("Veiculo Cod_auto(2)", veiculo2);
-
-    // const veiculoCelta = await veiculoPersistence.buscarPorModelo('Celta');
-    // console.log("Veiculo Celta", veiculoCelta);
-
-    // const veiculoAtualizado = await veiculoPersistence.atualizar(2, {modelo: 'Prisma', marca: 'Chevrolet', status: 'Livre'});
-    // console.log("Veiculo atualizado", veiculoAtualizado);
-
-    // const veiculoDeletado = await veiculoPersistence.deletar(6);
-    // console.log("veiculo deletado", veiculoDeletado);
 
 }
 

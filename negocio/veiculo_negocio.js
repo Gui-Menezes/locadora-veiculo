@@ -22,15 +22,7 @@ async function listar() {
     
 }
 
-// async function buscarPorCod_auto(cod_auto) {
-//     if(cod_auto){
-//         const veiculoBuscado = await veiculoPersistence.buscarPorCod_auto(cod_auto);
-//         return veiculoBuscado;
-//     }
-//     else {
-//         throw { id: 400, mensagem: "Falta parametros"};
-//     }
-// }
+
 
 async function buscarPorCod_auto(cod_auto) {
     const veiculoBuscado = await veiculoPersistence.buscarPorCod_auto(cod_auto);
@@ -41,16 +33,6 @@ async function buscarPorCod_auto(cod_auto) {
 }
 
 
-// async function buscarPorModelo(modelo) {
-//     if(modelo){
-//         const veiculoBuscado = await veiculoPersistence.buscarPorModelo(modelo);
-//         return veiculoBuscado;
-//     }
-//     else {
-//         throw { id: 400, mensagem: "Falta parametros"};
-//     }
-// }
-
 
 async function buscarPorModelo(modelo) {
     if(!modelo){
@@ -59,16 +41,6 @@ async function buscarPorModelo(modelo) {
     return await veiculoPersistence.buscarPorModelo(modelo);
 }
 
-
-// async function atualizar(cod_auto, veiculo) {
-//     if(cod_auto, veiculo && veiculo.modelo && veiculo.marca && veiculo.status){
-//         const veiculoAtualizado = await veiculoPersistence.atualizar(cod_auto, veiculo);
-//         return veiculoAtualizado;
-//     }
-//     else {
-//         throw { id: 400, mensagem: "Falta parametros"};
-//     }
-// }
 
 async function atualizar(cod_auto, veiculo) {
     if(validarVeiculo(veiculo)){
@@ -82,16 +54,6 @@ async function atualizar(cod_auto, veiculo) {
         }
     }   
 
-
-// async function deletar(cod_auto) {
-//     if(cod_auto){
-//         const veiculodeletado = await veiculoPersistence.deletar(cod_auto);
-//         return veiculodeletado;
-//     }
-//     else {
-//         throw { id: 400, mensagem: "Falta parametros"};
-//     }
-// }
 
 async function deletar(cod_auto) {
     const veiculoDeletar = await buscarPorCod_auto(cod_auto);
