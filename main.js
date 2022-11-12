@@ -1,5 +1,5 @@
 const clienteNegocio = require('./negocio/cliente_negocio')
-const locacaoPersistencia = require('./persistencia/locacao_persistencia')
+const locacaoNegocio = require('./negocio/locacao_negocio')
 
 async function main() {
 
@@ -95,8 +95,12 @@ async function main() {
     // }
 
     //LISTAR LOCAÇÃO:
-    const listaLocacao = await locacaoPersistencia.listar()
-    console.log("Lista das locações: ", listaLocacao)
+    try {
+        const listaLocacao = await locacaoNegocio.listar()
+        console.log("Lista das locações: ", listaLocacao)
+    }catch(err){
+        console.log(err)
+    }
 
     //INSERIR LOCAÇÃO:
     // const locacao1 = await locacaoPersistencia.inserir(2,1);
