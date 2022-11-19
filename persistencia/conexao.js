@@ -4,7 +4,7 @@ const conexao = {
     port: 5432,
     database: 'locadora',
     user: 'postgres',
-    password: 'post22'
+    password: '****'
 }
 
 module.exports = {
