@@ -2,15 +2,33 @@ const clientePersistencia = require('../persistencia/cliente_persistencia')
 const { validarCliente } = require('./cliente_validacao')
 
 // FUNCIOANDO!!!
-async function inserir(pesssoa) {
-    if(pesssoa && pesssoa.nome && pesssoa.documento) {
-        const clienteInserido = await clientePersistencia.inserir(pesssoa);
-        return clienteInserido;
+async function inserir(pessoa) {
+    if(pessoa && pessoa.nome && pessoa.documento) {
+        const clienteBuscadoPorDocumento = await clientePersistencia.buscarPorDocumento(pessoa.documento);
+        if(!clienteBuscadoPorDocumento) {
+            const clienteInserido = await clientePersistencia.inserir(pessoa);
+            return clienteInserido;
+        }
+        else{
+            throw { id: 402, mensagem: "Documento já cadastrado!"}
+        }
     }
     else {
         throw { id: 400, mensagem: "Faltam parâmetros!"};
     }
 }
+
+async function buscarPorDocumento(documento) {
+    const clienteBuscadoPorDocumento = await clientePersistencia.buscarPorDocumento(documento)
+    if(clienteBuscadoPorDocumento){
+        return clienteBuscadoPorDocumento;
+    }
+    else{
+        throw { id: 404, mensagem: `Cliente com documento ${documento} não encontrado!` };
+    }
+}
+
+
 // FUNCIOANDO!
 async function listar() {
     const clientesListados = await clientePersistencia.listar();
@@ -26,7 +44,7 @@ async function listar() {
 async function buscarPorCodCli(cod_cli) {
     const clienteBuscadoPorCodCli = await clientePersistencia.buscarPorCodCli(cod_cli);
     if(!clienteBuscadoPorCodCli) {
-        throw { id: 404, mensagem: "Cliente não encontrado!" };
+        throw { id: 404, mensagem: `Cliente com cod_cli ${cod_cli} não encontrado!` };
     }else{
         return clienteBuscadoPorCodCli;     
     }
@@ -36,7 +54,12 @@ async function buscarPorCodCli(cod_cli) {
 async function buscarPorNome(nome){
     if(nome){
         const clienteBuscadoPorNome = await clientePersistencia.buscarPorNome(nome)
-        return clienteBuscadoPorNome
+        if (clienteBuscadoPorNome) {
+            return clienteBuscadoPorNome
+        }
+        else {
+            throw { id: 404, mensagem: `Cliente "${nome}" não encontrado!` }
+        }
     }
     else{
         throw { id: 400, mensagem: "Faltam parâmetros!" }
@@ -50,6 +73,9 @@ async function atualizar(cod_cli, pessoa){
         if(clienteAtualizar) {
             return await clientePersistencia.atualizar(cod_cli, pessoa);
         }
+        else{
+            throw { id: 404, mensagem: "Cliente não encontrado!" }
+        }
     }
     else {
         throw {id: 400, mensagem: "Parâmetro(s) inválido(s)!" };
@@ -62,9 +88,12 @@ async function deletar(cod_cli){
     if(clienteDeletar){
         return await clientePersistencia.deletar(cod_cli);
     }
+    else{
+        throw { id: 404, mensagem: `Cliente com cod_cli ${cod_cli} não encontrado!` }
+    }
 }
 
 
 module.exports = {
-    inserir, listar, deletar, buscarPorCodCli, atualizar, buscarPorNome
+    inserir, buscarPorDocumento, listar, deletar, buscarPorCodCli, atualizar, buscarPorNome
 }

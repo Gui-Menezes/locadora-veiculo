@@ -11,24 +11,34 @@ async function listar() {
     return res.rows;
 }
 
-async function inserir(pesssoa){
+async function inserir(pessoa){
     const cliente = new Client(conexao)
     
     await cliente.connect()
 
     const res = await cliente.query('INSERT INTO cliente(nome, documento) VALUES($1, $2) RETURNING *', 
-    [pesssoa.nome, pesssoa.documento]);
+    [pessoa.nome, pessoa.documento]);
     await cliente.end()
     return res.rows[0]
 }
 
-async function atualizar(cod_cli, pesssoa) {
+async function buscarPorDocumento(documento){
+    const cliente = new Client(conexao)
+    await cliente.connect()
+
+    const res = await cliente.query('SELECT * FROM cliente where documento = $1', [documento])
+
+    await cliente.end()
+    return res.rows[0]
+}
+
+async function atualizar(cod_cli, pessoa) {
     const cliente = new Client(conexao)
 
     await cliente.connect()
 
     const res = await cliente.query('UPDATE cliente SET nome = $1, documento = $2 WHERE cod_cli = $3 RETURNING *', 
-    [pesssoa.nome, pesssoa.documento, cod_cli]);
+    [pessoa.nome, pessoa.documento, cod_cli]);
     await cliente.end()
     return res.rows[0]
 }
@@ -58,11 +68,11 @@ async function buscarPorCodCli(cod_cli) {
 async function buscarPorNome(nome) {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query('SELECT * FROM produtos WHERE NOME LIKE $1',['%' + nome + '%']);
+    const res = await cliente.query('SELECT * FROM cliente WHERE NOME LIKE $1',['%' + nome + '%']);
     await cliente.end();
     return res.rows[0];
 }
 
 module.exports = {
-    listar, inserir, atualizar, deletar, buscarPorCodCli, buscarPorNome
+    listar, inserir, buscarPorDocumento, atualizar, deletar, buscarPorCodCli, buscarPorNome
 }
