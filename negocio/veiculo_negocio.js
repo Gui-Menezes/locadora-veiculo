@@ -93,12 +93,8 @@ async function atualizar(cod_auto, veiculo) {
 
 async function deletar(cod_auto) {
     const veiculoDeletar = await buscarPorCod_auto(cod_auto);
-    if(veiculoDeletar) {
+    if(veiculoDeletar) 
         return await veiculoPersistence.deletar(cod_auto);
-    }
-    else {
-        throw { id: 404, mensagem: `Veículo de código ${cod_auto} não encontrado!` }
-    }
 }
 
 module.exports = {

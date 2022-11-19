@@ -48,7 +48,7 @@ async function inserir(locacao) {
 async function buscarPorCod_loc(cod_loc) {
     const locacao = await locacaoPersistencia.buscarPorCod_loc(cod_loc);
     if(!locacao) {
-        throw { id: 404, mensagem: `Locação ${cod_loc} não encontrada!`};
+        throw { id: 404, mensagem: `Locação de código ${cod_loc} não encontrada!`};
     }
     return locacao;
 }
