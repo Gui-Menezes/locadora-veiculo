@@ -3,13 +3,19 @@ const {validarVeiculo} = require('./veiculo_validacao')
 
 async function inserir(veiculo) {
     if(veiculo && veiculo.modelo && veiculo.marca && veiculo.chassi && veiculo.status){
-        const existeChassi = await veiculoPersistence.buscarPorChassi(veiculo.chassi)
-        if(existeChassi){
-            throw { id: 400, mensagem: `Chassi ${veiculo.chassi} já está cadastrado!`};
+        if (veiculo.chassi.toString().length <= 9){
+            const existeChassi = await veiculoPersistence.buscarPorChassi(veiculo.chassi)
+            if(!existeChassi){
+                const veiculoInserido = await veiculoPersistence.inserir(veiculo);
+                return veiculoInserido;
+            }
+            else{
+                
+                throw { id: 402, mensagem: `Chassi ${veiculo.chassi} já está cadastrado!`};  
+            }
         }
         else{
-            const veiculoInserido = await veiculoPersistence.inserir(veiculo);
-            return veiculoInserido;    
+            throw{id: 402, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
         }
     }
     else {
@@ -74,12 +80,16 @@ async function buscarPorModelo(modelo) {
     }
 }
 
-
 async function atualizar(cod_auto, veiculo) {
     if(validarVeiculo(veiculo)){
         const veiculoAtualizado = await buscarPorCod_auto(cod_auto);
         if(veiculoAtualizado){
-            return await veiculoPersistence.atualizar(cod_auto, veiculo);
+            if (veiculo.chassi.toString().length <= 9){
+                return await veiculoPersistence.atualizar(cod_auto, veiculo);
+            }
+            else {
+                throw{id: 402, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
+            }
         }
         else{
             throw { id: 404, mensagem: `Veículo de código ${cod_auto} não encontrado!` }
@@ -87,9 +97,8 @@ async function atualizar(cod_auto, veiculo) {
     }
     else {
             throw { id: 400, mensagem: "Parametro(s) Inválido(s)!!!"};
-        }
-    }   
-
+    }
+}   
 
 async function deletar(cod_auto) {
     const veiculoDeletar = await buscarPorCod_auto(cod_auto);
@@ -105,5 +114,4 @@ module.exports = {
     buscarPorModelo,
     atualizar,
     deletar
-
 }

@@ -1,6 +1,6 @@
 const clienteNegocio = require('./negocio/cliente_negocio')
 const locacaoNegocio = require('./negocio/locacao_negocio')
-const veiculoPersistencia = require('./persistencia/veiculo_persistencia')
+const veiculoNegocio = require('./negocio/veiculo_negocio')
 
 async function main() {
 

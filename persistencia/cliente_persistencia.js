@@ -70,7 +70,7 @@ async function buscarPorNome(nome) {
     await cliente.connect();
     const res = await cliente.query('SELECT * FROM cliente WHERE NOME LIKE $1',['%' + nome + '%']);
     await cliente.end();
-    return res.rows[0];
+    return res.rows;
 }
 
 module.exports = {
