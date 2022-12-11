@@ -43,6 +43,14 @@ async function buscarPorCod_loc(cod_loc) {
     return res.rows[0];
 }
 
+async function buscarClienteLocacao(cod_cli){
+    const cliente = new Client(conexao)
+    await cliente.connect();
+    const res = await cliente.query('SELECT * FROM locacao WHERE cod_cli = $1',[cod_cli]);
+    await cliente.end();
+    return res.rows[0];
+}
+
 async function atualizarDevolucao(cod_auto) {
     const cliente = new Client(conexao)
     await cliente.connect();
@@ -65,6 +73,7 @@ module.exports = {
     listar,
     inserir,
     buscarPorCod_loc,
+    buscarClienteLocacao,
     atualizarDevolucao,
     deletar
 }

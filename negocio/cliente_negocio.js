@@ -1,4 +1,5 @@
 const clientePersistencia = require('../persistencia/cliente_persistencia')
+const locacaoNegocio = require('./locacao_negocio')
 const { validarCliente } = require('./cliente_validacao')
 
 // FUNCIOANDO!!!
@@ -86,10 +87,13 @@ async function atualizar(cod_cli, pessoa){
 async function deletar(cod_cli){
     const clienteDeletar = await buscarPorCodCli(cod_cli)
     if(clienteDeletar){
-        return await clientePersistencia.deletar(cod_cli);
-    }
-    else{
-        throw { id: 404, mensagem: `Cliente com cod_cli ${cod_cli} não encontrado!` }
+        const clienteLocacao = await locacaoNegocio.buscarClienteLocacao(cod_cli)
+        if(!clienteLocacao) {
+            return await clientePersistencia.deletar(cod_cli);
+        }
+        else {
+            throw { id: 404, mensagem: `Cliente com código ${cod_cli} possui registro de locação e não pode ser excluído!`};
+        }
     }
 }
 

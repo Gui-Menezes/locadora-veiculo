@@ -53,6 +53,13 @@ async function buscarPorCod_loc(cod_loc) {
     return locacao;
 }
 
+async function buscarClienteLocacao(cod_cli){
+    const clienteLocacao = await locacaoPersistencia.buscarClienteLocacao(cod_cli);
+    if(clienteLocacao){
+        return clienteLocacao;
+    }
+}
+
 async function atualizarDevolucao(cod_auto) {
     if (cod_auto) {
         const devolucaoAtualizar = await veiculoPersistencia.buscarPorCod_auto(cod_auto);
@@ -78,6 +85,7 @@ module.exports = {
     listar,
     inserir,
     buscarPorCod_loc,
+    buscarClienteLocacao,
     atualizarDevolucao,
     deletar
 }

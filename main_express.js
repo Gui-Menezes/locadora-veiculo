@@ -112,9 +112,9 @@ app.put('/clientes/:cod_cli', async (req, res) => {
 // // // DELETAR CLIENTE:
     
 app.delete('/clientes/:cod_cli', async (req, res) => {
-    const cod_cli = req.params.cod_cli;
+    const cod_cli = req.params.cod_cli
     try {
-        const clienteDeletado = await clienteNegocio.deletar(cod_cli);
+        const clienteDeletado = await clienteNegocio.deletar(cod_cli)
         res.json(clienteDeletado);
     }catch(err){
         if(err && err.id) {

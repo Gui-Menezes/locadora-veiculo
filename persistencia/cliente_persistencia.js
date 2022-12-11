@@ -46,12 +46,12 @@ async function atualizar(cod_cli, pessoa) {
 async function deletar(cod_cli) {
     const cliente = new Client(conexao)
 
-    await cliente.connect()
+    await cliente.connect();
 
     const res = await cliente.query('DELETE FROM cliente WHERE cod_cli = $1 RETURNING *', 
     [cod_cli]);
-    await cliente.end()
-    return res.rows[0]
+    await cliente.end();
+    return res.rows[0];
 }
 
 async function buscarPorCodCli(cod_cli) {
