@@ -27,11 +27,11 @@ async function inserir(locacao) {
         else{
             const existeVeiculo = await veiculoPersistencia.buscarPorCod_auto(locacao.cod_auto)
             if(!existeVeiculo){
-                throw { id: 404, mensagem: `Veículo de código ${locacao.cod_cli} não cadastrado.`}
+                throw { id: 404, mensagem: `Veículo de código ${locacao.cod_auto} não cadastrado.`}
             }
             else{
-                if(existeVeiculo['status'] == 'ocupado') {
-                    throw { id: 100, mensagem: `Veículo de código ${locacao.cod_cli} está ocupado!` };
+                if(existeVeiculo['status'] === 'ocupado') {
+                    throw { id: 422, mensagem: `Veículo de código ${locacao.cod_auto} está ocupado!` };
                 }
                 else {
                     const locacaoInserida = await locacaoPersistencia.inserir(locacao);
@@ -60,6 +60,14 @@ async function buscarClienteLocacao(cod_cli){
     }
 }
 
+async function buscarVeiculoLocacao(cod_auto){
+    const veiculoLocacao = await locacaoPersistencia.buscarVeiculoLocacao(cod_auto);
+    if(veiculoLocacao){
+        return veiculoLocacao;
+    }
+}
+
+
 async function atualizarDevolucao(cod_auto) {
     if (cod_auto) {
         const devolucaoAtualizar = await veiculoPersistencia.buscarPorCod_auto(cod_auto);
@@ -86,6 +94,7 @@ module.exports = {
     inserir,
     buscarPorCod_loc,
     buscarClienteLocacao,
+    buscarVeiculoLocacao,
     atualizarDevolucao,
     deletar
 }

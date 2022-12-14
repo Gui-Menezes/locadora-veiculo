@@ -11,7 +11,7 @@ async function inserir(pessoa) {
             return clienteInserido;
         }
         else{
-            throw { id: 402, mensagem: "Documento já cadastrado!"}
+            throw { id: 422, mensagem: "Documento já cadastrado!"}
         }
     }
     else {
@@ -92,7 +92,7 @@ async function deletar(cod_cli){
             return await clientePersistencia.deletar(cod_cli);
         }
         else {
-            throw { id: 404, mensagem: `Cliente com código ${cod_cli} possui registro de locação e não pode ser excluído!`};
+            throw { id: 422, mensagem: `Cliente com código ${cod_cli} possui registro de locação e não pode ser excluído!`};
         }
     }
 }

@@ -1,4 +1,5 @@
 const veiculoPersistence = require('../persistencia/veiculo_persistencia')
+const locacaoNegocio = require('./locacao_negocio')
 const {validarVeiculo} = require('./veiculo_validacao')
 
 async function inserir(veiculo) {
@@ -11,11 +12,11 @@ async function inserir(veiculo) {
             }
             else{
                 
-                throw { id: 402, mensagem: `Chassi ${veiculo.chassi} já está cadastrado!`};  
+                throw { id: 422, mensagem: `Chassi ${veiculo.chassi} já está cadastrado!`};  
             }
         }
         else{
-            throw{id: 402, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
+            throw{id: 422, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
         }
     }
     else {
@@ -88,7 +89,7 @@ async function atualizar(cod_auto, veiculo) {
                 return await veiculoPersistence.atualizar(cod_auto, veiculo);
             }
             else {
-                throw{id: 402, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
+                throw{id: 422, mensagem: `Chassi ${veiculo.chassi} ultrapassou o limite de 9 digitos!`}
             }
         }
         else{
@@ -102,8 +103,15 @@ async function atualizar(cod_auto, veiculo) {
 
 async function deletar(cod_auto) {
     const veiculoDeletar = await buscarPorCod_auto(cod_auto);
-    if(veiculoDeletar) 
-        return await veiculoPersistence.deletar(cod_auto);
+    if(veiculoDeletar) {
+        const veiculoLocacao = await locacaoNegocio.buscarVeiculoLocacao(cod_auto)
+        if(!veiculoLocacao){
+            return await veiculoPersistence.deletar(cod_auto);
+        }
+       else {
+        throw { id: 422, mensagem: `Veículo com código ${cod_auto} possui registro de locação e não pode ser excluído!`};
+       }
+    }
 }
 
 module.exports = {
